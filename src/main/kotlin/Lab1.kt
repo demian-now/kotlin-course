@@ -1,13 +1,14 @@
 fun main()
 {
     val test = """
+        |1 2 3 4 5 6 7 8
         |1 2 3 4 5 6 7
         |1 2 3 4 5 6
-        |2 3 4 5 6
-        |3 4 5 6
-        |4 5 6
-        |5 6
-        |6""".trimMargin()
+        |1 2 3 4 5
+        |1 2 3 4
+        |1 2 3
+        |1 2
+        |1""".trimMargin()
     println(alignRight(test,20))
     println(alignLeft(test, 20))
     println(alignCenter(test, 20))
@@ -63,17 +64,8 @@ fun alignWidth(rawString: String, length: Int): String{
     for(i in 0 until listOfLines.size) {
         listOfLines[i] = listOfLines[i].trim()
         val count = listOfLines[i].countOfSym(' ')
-        if(count!=0){
-        val countOfSpace = length - listOfLines[i].length + 1
-            if(countOfSpace!=0)
-            {
-                listOfLines[i] = listOfLines[i].replace(" ", "".padStart(if(countOfSpace/count<=0) 2 else countOfSpace/count+1,' '))
-                for(j in 0 until if(countOfSpace%count==0) 1 else countOfSpace%count+1) {
-                    listOfLines[i] = listOfLines[i].replaceFirst(("".padStart(if(countOfSpace/count<=0) 2 else countOfSpace/count+1, ' ')),
-                        ("".padStart(if(countOfSpace/count<=0) 1 else countOfSpace/count, ' ')))
-                }
-            }
-        }
+        val countOfSpaces = length - listOfLines[i].length
+        //TODO Пересчитать в трезвом уме
     }
     return makeString(listOfLines)
 }

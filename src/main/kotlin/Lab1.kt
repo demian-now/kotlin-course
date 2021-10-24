@@ -54,12 +54,12 @@ fun alignLeft(rawString: String, length: Int): String {
 
 fun alignWidth(rawString: String, length: Int){
     val listOfLines = splitByWidth(rawString, length)
-    //TODO
+    //TODO потом сделаю
 }
 
 fun alignCenter(rawString: String, length: Int){
     val listOfLines = splitByWidth(rawString, length)
-    //TODO
+    //TODO потом сделаю
 }
 
 

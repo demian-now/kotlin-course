@@ -1,6 +1,10 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+fun main() {
+   val mmm = mutableListOf<Int>(1,2,3,4,5)
+   delete(mmm)
+   println(mmm)
+}
 
-    // Try adding program arguments at Run/Debug configuration
-    println("Program arguments: ${args.joinToString()}")
+fun delete(mmm: MutableList<Int>)
+{
+   mmm.removeAt(1)
 }

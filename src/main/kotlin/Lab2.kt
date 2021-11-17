@@ -13,12 +13,16 @@ enum class TypeOfElement{
 
 class Prefix
 {
-    fun calculate(input: String): Double{
+    fun calculate(
+        input: String
+    ): Double{
         val listOfElement = getListOfElements(input)
         val mathExpr = makePrefixNotation(listOfElement)
         return getResult(mathExpr)
     }
-    private fun getListOfElements(input: String): MutableList<Pair<TypeOfElement, String>> {
+    private fun getListOfElements(
+        input: String
+    ): MutableList<Pair<TypeOfElement, String>> {
         var temp = ""
         var typeOf = TypeOfElement.NotDefined
         val calculate = mutableListOf<Pair<TypeOfElement, String>>()
@@ -26,7 +30,7 @@ class Prefix
             when {
                 "+-/*^()".contains(i) -> {
                     calculate.add(Pair(typeOf, temp))
-                    temp = temp.clear()
+                    temp = ""
                     calculate.add(Pair(if("()".contains(i)) TypeOfElement.Bracket else TypeOfElement.Operator, "$i"))
                     typeOf = TypeOfElement.NotDefined
                 }
@@ -45,8 +49,7 @@ class Prefix
                     "1234567890.pie".contains(i) -> temp+=i
                     "sincostgctglnsqrt".contains(i) -> {
                         calculate.add(Pair(typeOf, temp))
-                        temp = temp.clear()
-                        temp+=i
+                        temp = i.toString()
                         typeOf = TypeOfElement.Function
                     }
                 }
@@ -54,8 +57,7 @@ class Prefix
                     "sincostgctglnsqrt".contains(i) -> temp+=i
                     "1234567890.pie".contains(i) -> {
                         calculate.add(Pair(typeOf, temp))
-                        temp = temp.clear()
-                        temp += i
+                        temp = i.toString()
                         typeOf = TypeOfElement.Number
                     }
                 }
@@ -67,8 +69,9 @@ class Prefix
         return calculate
     }
 
-    private fun ifFunction(input: MutableList<Pair<TypeOfElement, String>>)
-    {
+    private fun ifFunction(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ){
         var isChanged = true
         while(isChanged)
             for(i in 0 until input.size)
@@ -110,8 +113,9 @@ class Prefix
             }
     }
 
-    private fun makePrefixNotation(input: MutableList<Pair<TypeOfElement, String>>): MutableList<Pair<TypeOfElement, String>>
-    {
+    private fun makePrefixNotation(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): MutableList<Pair<TypeOfElement, String>> {
         ifFunction(input)
         val stack = mutableListOf<Pair<TypeOfElement, String>>()
         val queue = mutableListOf<Pair<TypeOfElement, String>>()
@@ -152,8 +156,9 @@ class Prefix
         queue.reverse()
         return queue
     }
-    private fun isCorrect(input: MutableList<Pair<TypeOfElement, String>>): Boolean
-    {
+    private fun isCorrect(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): Boolean {
         val listOfFunc = listOf("sin", "cos", "tg", "ctg", "ln", "sqrt")
         val listOfConst = listOf("pi", "e")
         for(i in input)
@@ -168,8 +173,9 @@ class Prefix
         }
         return true
     }
-    private fun unaryOperator(input: MutableList<Pair<TypeOfElement, String>>)
-    {
+    private fun unaryOperator(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ){
         if("+-".contains(input[0].second))
             input.add(0, Pair(TypeOfElement.Number, "0"))
         for(i in 0 until input.size)
@@ -181,7 +187,9 @@ class Prefix
             }
         }
     }
-    private fun getResult(input: MutableList<Pair<TypeOfElement, String>>): Double{
+    private fun getResult(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): Double{
         while(input.size>1) {
             var isChanged = false
             for (i in 0..input.size - 3) {

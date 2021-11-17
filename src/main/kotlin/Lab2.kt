@@ -11,29 +11,18 @@ enum class TypeOfElement{
     NotDefined
 }
 
-fun main()
-{
-    val test = Prefix()
-
-    val easy = "1+2+3+4+5+6   +7"
-    val medium = "1*2+3*(12/1)"
-    val hard = "2*cos(pi/2)/0.01-(-1*sin(cos(2-tg(3))))"
-    val hardcore = "2^8-12345*10000"
-
-    println(easy + "=" + test.calculate(easy))
-    println(medium + "=" + test.calculate(medium))
-    println(hard + "=" + test.calculate(hard))
-    println(hardcore + "=" + test.calculate(hardcore))
-}
-
 class Prefix
 {
-    fun calculate(input: String): Double{
+    fun calculate(
+        input: String
+    ): Double{
         val listOfElement = getListOfElements(input)
         val mathExpr = makePrefixNotation(listOfElement)
         return getResult(mathExpr)
     }
-    private fun getListOfElements(input: String): MutableList<Pair<TypeOfElement, String>> {
+    private fun getListOfElements(
+        input: String
+    ): MutableList<Pair<TypeOfElement, String>> {
         var temp = ""
         var typeOf = TypeOfElement.NotDefined
         val calculate = mutableListOf<Pair<TypeOfElement, String>>()
@@ -41,7 +30,7 @@ class Prefix
             when {
                 "+-/*^()".contains(i) -> {
                     calculate.add(Pair(typeOf, temp))
-                    temp = temp.clear()
+                    temp = ""
                     calculate.add(Pair(if("()".contains(i)) TypeOfElement.Bracket else TypeOfElement.Operator, "$i"))
                     typeOf = TypeOfElement.NotDefined
                 }
@@ -60,8 +49,7 @@ class Prefix
                     "1234567890.pie".contains(i) -> temp+=i
                     "sincostgctglnsqrt".contains(i) -> {
                         calculate.add(Pair(typeOf, temp))
-                        temp = temp.clear()
-                        temp+=i
+                        temp = i.toString()
                         typeOf = TypeOfElement.Function
                     }
                 }
@@ -69,8 +57,7 @@ class Prefix
                     "sincostgctglnsqrt".contains(i) -> temp+=i
                     "1234567890.pie".contains(i) -> {
                         calculate.add(Pair(typeOf, temp))
-                        temp = temp.clear()
-                        temp += i
+                        temp = i.toString()
                         typeOf = TypeOfElement.Number
                     }
                 }
@@ -82,8 +69,9 @@ class Prefix
         return calculate
     }
 
-    private fun ifFunction(input: MutableList<Pair<TypeOfElement, String>>)
-    {
+    private fun ifFunction(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ){
         var isChanged = true
         while(isChanged)
             for(i in 0 until input.size)
@@ -125,8 +113,9 @@ class Prefix
             }
     }
 
-    private fun makePrefixNotation(input: MutableList<Pair<TypeOfElement, String>>): MutableList<Pair<TypeOfElement, String>>
-    {
+    private fun makePrefixNotation(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): MutableList<Pair<TypeOfElement, String>> {
         ifFunction(input)
         val stack = mutableListOf<Pair<TypeOfElement, String>>()
         val queue = mutableListOf<Pair<TypeOfElement, String>>()
@@ -167,8 +156,9 @@ class Prefix
         queue.reverse()
         return queue
     }
-    private fun isCorrect(input: MutableList<Pair<TypeOfElement, String>>): Boolean
-    {
+    private fun isCorrect(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): Boolean {
         val listOfFunc = listOf("sin", "cos", "tg", "ctg", "ln", "sqrt")
         val listOfConst = listOf("pi", "e")
         for(i in input)
@@ -183,8 +173,9 @@ class Prefix
         }
         return true
     }
-    private fun unaryOperator(input: MutableList<Pair<TypeOfElement, String>>)
-    {
+    private fun unaryOperator(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ){
         if("+-".contains(input[0].second))
             input.add(0, Pair(TypeOfElement.Number, "0"))
         for(i in 0 until input.size)
@@ -196,7 +187,9 @@ class Prefix
             }
         }
     }
-    private fun getResult(input: MutableList<Pair<TypeOfElement, String>>): Double{
+    private fun getResult(
+        input: MutableList<Pair<TypeOfElement, String>>
+    ): Double{
         while(input.size>1) {
             var isChanged = false
             for (i in 0..input.size - 3) {
@@ -204,7 +197,8 @@ class Prefix
                     && input[i + 1].first == TypeOfElement.Number
                     && input[i + 2].first == TypeOfElement.Number
                 ) {
-                    val value1 = if("pie".contains(input[i+1].second)) if(input[i+1].second=="pi") pi else e else input[i+1].second.toDouble()
+                    val value1 = if("pie".contains(input[i+1].second)) 
+                        if(input[i+1].second=="pi") pi else e else input[i+1].second.toDouble()
                     val value2 = if("pie".contains(input[i+2].second)) if(input[i+2].second=="pi") pi else e else input[i+2].second.toDouble()
                     input[i] = Pair(
                         TypeOfElement.Number, when (input[i].second) {
@@ -240,6 +234,3 @@ fun getPriority(operator: String): Int
     }
 }
 
-private fun String.clear(): String {
-    return this.drop(this.length)
-}

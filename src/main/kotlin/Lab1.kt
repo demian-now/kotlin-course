@@ -1,13 +1,3 @@
-fun main() {
-    val test = """
-        |Я делал эту лабу вроде бы и два дня, но как бы три, хотя чистого времени ушло примерно часа 3""".trimMargin()
-    println(alignRight(test, 20))
-    println(alignLeft(test, 20))
-    println(alignCenter(test, 20))
-    println(alignWidth(test, 20))
-    println(alignText(test, 20, Alignment.LEFT))
-}
-
 enum class Alignment {
     LEFT,
     RIGHT,
@@ -29,7 +19,7 @@ fun alignText(
 }
 
 
-fun makeString(
+private fun makeString(
     lines: List<String>
 ): String {
     var result = ""
@@ -37,7 +27,7 @@ fun makeString(
     return result
 }
 
-fun splitByWidth(
+private fun splitByWidth(
     rawString: String,
     length: Int
 ): MutableList<String> {
@@ -60,7 +50,7 @@ fun splitByWidth(
     return listOfLines
 }
 
-fun alignRight(
+private fun alignRight(
     rawString: String,
     length: Int
 ): String {
@@ -72,12 +62,12 @@ fun alignRight(
     return makeString(listOfLines)
 }
 
-fun alignLeft(
+private fun alignLeft(
     rawString: String,
     length: Int,
 ): String = makeString(splitByWidth(rawString, length))
 
-fun alignWidth(
+private fun alignWidth(
     rawString: String,
     length: Int
 ): String {
@@ -106,7 +96,7 @@ private fun String.countOfSym(
     return count
 }
 
-fun alignCenter(
+private fun alignCenter(
     rawString: String,
     length: Int
 ): String {

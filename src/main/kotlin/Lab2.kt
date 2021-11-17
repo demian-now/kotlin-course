@@ -11,21 +11,6 @@ enum class TypeOfElement{
     NotDefined
 }
 
-fun main()
-{
-    val test = Prefix()
-
-    val easy = "1+2+3+4+5+6   +7"
-    val medium = "1*2+3*(12/1)"
-    val hard = "2*cos(pi/2)/0.01-(-1*sin(cos(2-tg(3))))"
-    val hardcore = "2^8-12345*10000"
-
-    println(easy + "=" + test.calculate(easy))
-    println(medium + "=" + test.calculate(medium))
-    println(hard + "=" + test.calculate(hard))
-    println(hardcore + "=" + test.calculate(hardcore))
-}
-
 class Prefix
 {
     fun calculate(input: String): Double{
@@ -204,7 +189,8 @@ class Prefix
                     && input[i + 1].first == TypeOfElement.Number
                     && input[i + 2].first == TypeOfElement.Number
                 ) {
-                    val value1 = if("pie".contains(input[i+1].second)) if(input[i+1].second=="pi") pi else e else input[i+1].second.toDouble()
+                    val value1 = if("pie".contains(input[i+1].second)) 
+                        if(input[i+1].second=="pi") pi else e else input[i+1].second.toDouble()
                     val value2 = if("pie".contains(input[i+2].second)) if(input[i+2].second=="pi") pi else e else input[i+2].second.toDouble()
                     input[i] = Pair(
                         TypeOfElement.Number, when (input[i].second) {
@@ -240,6 +226,3 @@ fun getPriority(operator: String): Int
     }
 }
 
-private fun String.clear(): String {
-    return this.drop(this.length)
-}

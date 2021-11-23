@@ -1,5 +1,6 @@
 import kotlin.math.PI
 import kotlin.math.pow
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 interface Shape {
@@ -66,12 +67,12 @@ class Triangle(_a: Double, _b: Double, _c:Double):Shape{
 
     init {
         if(_a<0 && _b<0 && _c<0) throw IllegalArgumentException("Triangle parameters can't be negative")
-        if(a+b>c || a+c>b || b+c>a) throw IllegalArgumentException("There is no triangle with these parameters")
+        if(a+b<c || a+c<b || b+c<a) throw IllegalArgumentException("There is no triangle with these parameters")
     }
 
     override fun calcArea(): Double {
         val p = calcPerimeter()/2.0
-        return p*(p-a)*(p-b)*(p-c)
+        return sqrt(p*(p-a)*(p-b)*(p-c))
     }
 
     override fun calcPerimeter(): Double {

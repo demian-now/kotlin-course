@@ -17,7 +17,7 @@ dependencies {
 }
 
 tasks.test {
-    useJUnit()
+    this.useTestNG()
 }
 
 tasks.withType<KotlinCompile> {

@@ -48,7 +48,7 @@ class Rectangle(
     private var height = _height
 
     init {
-        if((width<0) && (height<0)) throw IllegalArgumentException("Rectangle parameters can't be negative")
+        if((width<0) || (height<0)) throw IllegalArgumentException("Rectangle parameters can't be negative")
     }
 
     override fun calcArea(): Double {

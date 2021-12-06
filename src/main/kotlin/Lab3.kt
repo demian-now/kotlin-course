@@ -1,4 +1,5 @@
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -122,16 +123,9 @@ class ShapeFactoryImpl : ShapeFactory {
     }
 
     override fun createRandomTriangle(): Triangle {
-        var a: Double
-        var b: Double
-        var c: Double
-        while (true) {
-            a = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
-            b = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
-            c = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
-            if (a + b > c && a + c > b && b + c > a)
-                break
-        }
+        var a = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
+        var b = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
+        var c = Random.nextDouble(abs(b-a), a+b)
         return createTriangle(a, b, c)
     }
 

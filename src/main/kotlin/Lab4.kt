@@ -1,9 +1,10 @@
 fun main() {
-    val a = MutableMatrix(arrayOf(arrayOf(1.0)))
-    a /= 2.0
-    a.cols
-    a.rows
-    a[1,0] = 2.0
+    val a = Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0), arrayOf(4.0,5.0,6.0)))
+    println(a.cols)
+    println(a.rows)
+    println(a.toString())
+    println(a.transpose().toString())
+    println((a*a.transpose()).toString())
 }
 
 
@@ -35,7 +36,13 @@ open class Matrix(sample: Array<Array<Double>>) {
     }
 
     override fun toString(): String {
-        return array.contentToString()
+        var result = ""
+        for(i in array.indices) {
+            for (j in array[0].indices)
+                result+= (" ${array[i][j]}")
+            result+='\n'
+        }
+         return result
     }
 
     operator fun get(i: Int, j: Int): Double {
@@ -44,17 +51,30 @@ open class Matrix(sample: Array<Array<Double>>) {
 
     operator fun plus(other: Matrix): Matrix {
         checkForSimple(other)
-        TODO()
+        val result = array.clone()
+        for(i in result.indices)
+            for(j in result[0].indices)
+                result[i][j]+=other[i,j]
+        return Matrix(result)
     }
 
     operator fun minus(other: Matrix): Matrix {
         checkForSimple(other)
-        TODO()
+        val result = array.clone()
+        for(i in result.indices)
+            for(j in result[0].indices)
+                result[i][j]+=other[i,j]
+        return Matrix(result)
     }
 
     operator fun times(other: Matrix): Matrix {
         checkForMultiply(other)
-        TODO()
+        val result : Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
+        for(i in result.indices)
+            for(j in result[0].indices)
+                for(k in 0 until cols)
+                    result[i][j] += (array[i][k] * other[k,j])
+        return Matrix(result)
     }
 
     operator fun plus(scalar: Double): Matrix {
@@ -92,12 +112,21 @@ open class Matrix(sample: Array<Array<Double>>) {
         return Matrix(result)
     }
 
-    private fun checkForMultiply(other: Matrix) {
+    fun transpose(): Matrix
+    {
+        val result: Array<Array<Double>> = Array(cols) { Array(rows) { 0.0 } }
+        for(i in array.indices)
+            for(j in array[0].indices)
+                result[j][i] = array[i][j]
+        return Matrix(result)
+    }
+
+    protected fun checkForMultiply(other: Matrix) {
         if (this.cols != other.rows)
             throw IllegalArgumentException("These matrices have inappropriate dimensions")
     }
 
-    private fun checkForSimple(other: Matrix) {
+    protected fun checkForSimple(other: Matrix) {
         if (this.cols != other.cols || this.rows != other.rows)
             throw IllegalArgumentException("These matrices have inappropriate dimensions")
     }
@@ -105,15 +134,27 @@ open class Matrix(sample: Array<Array<Double>>) {
 
 class MutableMatrix(sample: Array<Array<Double>>) : Matrix(sample) {
     operator fun plusAssign(other: Matrix) {
-        TODO()
+        checkForSimple(other)
+        for(i in array.indices)
+            for(j in array[0].indices)
+                array[i][j]+=other[i,j]
     }
 
     operator fun minusAssign(other: Matrix) {
-        TODO()
+        checkForSimple(other)
+        for(i in array.indices)
+            for(j in array[0].indices)
+                array[i][j]-=other[i,j]
     }
 
     operator fun timesAssign(other: Matrix) {
-        TODO()
+        checkForMultiply(other)
+        val result : Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
+        for(i in result.indices)
+            for(j in result[0].indices)
+                for(k in 0 until cols)
+                    result[i][j] += (array[i][k] * other[k,j])
+        array = result
     }
 
     operator fun plusAssign(scalar: Double) {

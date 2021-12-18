@@ -3,7 +3,7 @@ import kotlin.math.PI
 fun main() {
    /* Наработки первых двух лаб*/
 
-   val test1 = """
+   /*val test1 = """
         |Я делал эту лабу
         |вроде бы и два дня, но как бы три, хотя чистого времени ушло примерно часа 3""".trimMargin()
    println(alignText(test1, 1, Alignment.LEFT))
@@ -93,6 +93,52 @@ fun main() {
          is Triangle -> "Triangle"
          else -> error("")
       }
-   } with ${maxArea.calcPerimeter()}")
+   } with ${maxArea.calcPerimeter()}")*/
+
+   val test5 = LibraryServiceImpl()
+
+   val book1 = Book(
+      title = "Муму",
+      author = Author("Иван", "Сергеевич", "Тургенев"),
+      year = 1852,
+      genre = Genre.Drama,
+      status = Status.Available
+   )
+
+   val book2 = Book(
+      title = "Хранители",
+      author = Author("Алан", "", "Мур"),
+      year = 1987,
+      genre = Genre.Comics,
+      status = Status.Available
+   )
+
+   val book3 = Book(
+      title = "Neon Genesis Evangelion",
+      author = Author("Ёсиюки", "", "Садамото"),
+      year = 1995,
+      genre = Genre.Tragedy,
+      status = Status.Restoration
+   )
+
+   val book4 = Book(
+      title = "Call Me by Your Name",
+      author = Author("Андре", "", "Асиман"),
+      year = 2007,
+      genre = Genre.Drama,
+      status = Status.ComingSoon
+   )
+
+   test5.addBook(book1)
+   test5.addBook(book2)
+   test5.addBook(book3)
+   test5.addBook(book4)
+
+   println(test5.findBooks(genre = Genre.Drama))
+   println(test5.getAllAvailableBooks())
+
+   val test5map = test5.getAllBookStatuses()
+
+   println(test5map.toString())
 }
 

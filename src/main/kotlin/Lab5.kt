@@ -38,13 +38,34 @@ data class Book(
         result = 31 * result + (registrationDate?.hashCode() ?: 0)
         return result
     }
+
+    override fun toString(): String {
+        return """ 
+            |title $title 
+            |isbn $isbn
+            |author $author
+            |year $year
+            |genre $genre 
+            |status ${when(status)
+        {
+            Status.Available -> "available"
+            Status.ComingSoon -> "coming soon"
+            Status.Restoration -> "restoration"
+            is Status.UsedBy -> "used by"
+        }}
+        |""".trimMargin()
+    }
 }
 
 data class Author(
     val firstName: String = "",
     val middleName: String = "",
     val lastName: String = ""
-)
+) {
+    override fun toString(): String {
+        return "$firstName $middleName $lastName"
+    }
+}
 
 class User(
     val firstName: String,
@@ -111,7 +132,7 @@ interface LibraryService {
 
     fun setBookStatus(book: Book, status: Status)
 
-    fun addBook(book: Book, status: Status = Status.Available)
+    fun addBook(book: Book)
 
     fun registerUser(firstName: String, middleName: String, lastName: String)
     fun unregisterUser(user: User)
@@ -160,9 +181,9 @@ class LibraryServiceImpl: LibraryService{
     }
 
     override fun getAllBookStatuses(): Map<Book, Status> {
-        val map: Map<Book, Status> = emptyMap()
+        val map = mutableMapOf<Book, Status>()
         for(i in bookList)
-            map.plus(Pair(i, i.status))
+            map.put(i, i.status)
         return map
     }
 
@@ -170,8 +191,7 @@ class LibraryServiceImpl: LibraryService{
         book.status = status
     }
 
-    override fun addBook(book: Book, status: Status) {
-        book.status = status
+    override fun addBook(book: Book) {
         bookList.add(book)
     }
 

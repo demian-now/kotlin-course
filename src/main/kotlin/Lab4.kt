@@ -1,13 +1,3 @@
-fun main() {
-    val a = Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0), arrayOf(4.0,5.0,6.0)))
-    println(a.cols)
-    println(a.rows)
-    println(a.toString())
-    println(a.transpose().toString())
-    println((a*a.transpose()).toString())
-}
-
-
 open class Matrix(sample: Array<Array<Double>>) {
     protected var array = arrayOf(arrayOf(1.0))
 

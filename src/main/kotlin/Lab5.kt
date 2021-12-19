@@ -40,12 +40,12 @@ data class Book(
     }
 
     override fun toString(): String {
-        return """ 
-            |title $title 
+        return """
+            |title $title
             |isbn $isbn
             |author $author
             |year $year
-            |genre $genre 
+            |genre $genre
             |status ${when(status)
         {
             Status.Available -> "available"
@@ -89,6 +89,26 @@ class User(
     fun removeBook(book: Book)
     {
         rentedBooks.remove(book)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is User) return false
+
+        if (firstName != other.firstName) return false
+        if (middleName != other.middleName) return false
+        if (lastName != other.lastName) return false
+        if (registrationDate != other.registrationDate) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = firstName.hashCode()
+        result = 31 * result + middleName.hashCode()
+        result = 31 * result + lastName.hashCode()
+        result = 31 * result + (registrationDate?.hashCode() ?: 0)
+        return result
     }
 }
 
@@ -209,6 +229,13 @@ class LibraryServiceImpl: LibraryService{
     }
 
     override fun takeBook(user: User, book: Book) {
+        try{
+            userList.find { it==user }
+        }
+        catch(e: Exception)
+        {
+            throw IllegalArgumentException("User not found")
+        }
         if(user.countOfBooks<3) {
             userList.first {
                 it == user

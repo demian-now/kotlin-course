@@ -230,7 +230,7 @@ class LibraryServiceImpl: LibraryService{
 
     override fun takeBook(user: User, book: Book) {
         try{
-            userList.find { it==user }
+            userList.find  { it==user }
         }
         catch(e: Exception)
         {

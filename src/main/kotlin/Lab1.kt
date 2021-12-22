@@ -8,7 +8,7 @@ enum class Alignment {
 fun alignText(
     text: String,
     lineWidth: Int,
-    alignment: Alignment
+    alignment: Alignment,
 ): String {
     return when (alignment) {
         Alignment.LEFT -> alignLeft(text, lineWidth)
@@ -20,7 +20,7 @@ fun alignText(
 
 
 private fun makeString(
-    lines: List<String>
+    lines: List<String>,
 ): String {
     var result = ""
     for (i in lines) result = result + i + "\n"
@@ -29,7 +29,7 @@ private fun makeString(
 
 private fun splitByWidth(
     rawString: String,
-    length: Int
+    length: Int,
 ): MutableList<String> {
     if (length <= 0)
         throw IllegalArgumentException("Length can't be 0 or negative") //as a precaution
@@ -52,7 +52,7 @@ private fun splitByWidth(
 
 private fun alignRight(
     rawString: String,
-    length: Int
+    length: Int,
 ): String {
     val listOfLines = splitByWidth(rawString, length)
     for (i in 0 until listOfLines.size) {
@@ -69,7 +69,7 @@ private fun alignLeft(
 
 private fun alignWidth(
     rawString: String,
-    length: Int
+    length: Int,
 ): String {
     val listOfLines = splitByWidth(rawString, length)
     for (i in 0 until listOfLines.size - 1) { //when the text is aligned to the width, the last line does not change
@@ -88,7 +88,7 @@ private fun alignWidth(
 }
 
 private fun String.countOfSym(
-    symbol: Char
+    symbol: Char,
 ): Int {
     var count = 0
     for (i in this)
@@ -98,7 +98,7 @@ private fun String.countOfSym(
 
 private fun alignCenter(
     rawString: String,
-    length: Int
+    length: Int,
 ): String {
     val listOfLines = splitByWidth(rawString, length)
     for (i in 0 until listOfLines.size) {

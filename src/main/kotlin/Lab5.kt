@@ -10,7 +10,7 @@ data class Book(
     val genre: Genre,
     val description: String = "No description",
     val registrationDate: Calendar? = Calendar.getInstance(),
-    var status: Status
+    var status: Status,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -46,13 +46,14 @@ data class Book(
             |author $author
             |year $year
             |genre $genre
-            |status ${when(status)
-        {
-            Status.Available -> "available"
-            Status.ComingSoon -> "coming soon"
-            Status.Restoration -> "restoration"
-            is Status.UsedBy -> "used by"
-        }}
+            |status ${
+            when (status) {
+                Status.Available -> "available"
+                Status.ComingSoon -> "coming soon"
+                Status.Restoration -> "restoration"
+                is Status.UsedBy -> "used by"
+            }
+        }
         |""".trimMargin()
     }
 }
@@ -60,7 +61,7 @@ data class Book(
 data class Author(
     val firstName: String = "",
     val middleName: String = "",
-    val lastName: String = ""
+    val lastName: String = "",
 ) {
     override fun toString(): String {
         return "$firstName $middleName $lastName"
@@ -71,8 +72,7 @@ class User(
     val firstName: String,
     val middleName: String,
     val lastName: String,
-)
-{
+) {
     val registrationDate: Calendar? = Calendar.getInstance()
     val countOfBooks: Int
         get() {
@@ -81,13 +81,11 @@ class User(
 
     private val rentedBooks = mutableListOf<Book>()
 
-    fun addBook(book: Book)
-    {
+    fun addBook(book: Book) {
         rentedBooks.add(book)
     }
 
-    fun removeBook(book: Book)
-    {
+    fun removeBook(book: Book) {
         rentedBooks.remove(book)
     }
 
@@ -142,7 +140,13 @@ sealed class Status {
 }
 
 interface LibraryService {
-    fun findBooks(title: String = "", isbn: String = "", author: Author = Author(), year: Year = 0, genre: Genre = Genre.Null): List<Book>
+    fun findBooks(
+        title: String = "",
+        isbn: String = "",
+        author: Author = Author(),
+        year: Year = 0,
+        genre: Genre = Genre.Null,
+    ): List<Book>
 
     fun getAllBooks(): List<Book>
     fun getAllAvailableBooks(): List<Book>
@@ -161,7 +165,7 @@ interface LibraryService {
     fun returnBook(book: Book)
 }
 
-class LibraryServiceImpl: LibraryService{
+class LibraryServiceImpl : LibraryService {
     private val bookList = mutableListOf<Book>()
     private val userList = mutableListOf<User>()
     private val disabledUser = mutableListOf<User>()
@@ -171,9 +175,8 @@ class LibraryServiceImpl: LibraryService{
         isbn: String,
         author: Author,
         year: Year,
-        genre: Genre
-    ): List<Book>
-    {
+        genre: Genre,
+    ): List<Book> {
         return bookList.filter { elem ->
             ((title == "") || (title == elem.title))
                     && ((isbn == "") || (isbn == elem.isbn))
@@ -190,9 +193,9 @@ class LibraryServiceImpl: LibraryService{
 
     override fun getAllAvailableBooks(): List<Book> {
         val result = mutableListOf<Book>()
-        for(i in bookList)
-            if(i.status is Status.Available)
-                result+=i
+        for (i in bookList)
+            if (i.status is Status.Available)
+                result += i
         return result
     }
 
@@ -202,7 +205,7 @@ class LibraryServiceImpl: LibraryService{
 
     override fun getAllBookStatuses(): Map<Book, Status> {
         val map = mutableMapOf<Book, Status>()
-        for(i in bookList)
+        for (i in bookList)
             map.put(i, i.status)
         return map
     }
@@ -229,14 +232,12 @@ class LibraryServiceImpl: LibraryService{
     }
 
     override fun takeBook(user: User, book: Book) {
-        try{
-            userList.find  { it==user }
-        }
-        catch(e: Exception)
-        {
+        try {
+            userList.find { it == user }
+        } catch (e: Exception) {
             throw IllegalArgumentException("User not found")
         }
-        if(user.countOfBooks<3) {
+        if (user.countOfBooks < 3) {
             userList.first {
                 it == user
             }.addBook(book)

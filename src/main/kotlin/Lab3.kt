@@ -123,9 +123,9 @@ class ShapeFactoryImpl : ShapeFactory {
     }
 
     override fun createRandomTriangle(): Triangle {
-        var a = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
-        var b = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
-        var c = Random.nextDouble(abs(b-a), a+b)
+        val a = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
+        val b = Random.nextDouble(0.0, Int.MAX_VALUE.toDouble())
+        val c = Random.nextDouble(abs(b - a), a + b)
         return createTriangle(a, b, c)
     }
 

@@ -1,8 +1,12 @@
+//сколько бы я не тыкал ctrl+shift+l, ничего не меняется(((
+
 open class Matrix(sample: Array<Array<Double>>) {
     protected var array = arrayOf(arrayOf(1.0))
 
     init {
         array = sample.clone()
+        for (i in sample.indices)
+            array[i] = sample[i].clone()
         val control = array[0].size
         for (i in array)
             if (i.size != control) throw IllegalArgumentException("The rows of the matrix have different dimensions")
@@ -27,12 +31,12 @@ open class Matrix(sample: Array<Array<Double>>) {
 
     override fun toString(): String {
         var result = ""
-        for(i in array.indices) {
+        for (i in array.indices) {
             for (j in array[0].indices)
-                result+= (" ${array[i][j]}")
-            result+='\n'
+                result += (" ${array[i][j]}")
+            result += '\n'
         }
-         return result
+        return result
     }
 
     operator fun get(i: Int, j: Int): Double {
@@ -42,71 +46,77 @@ open class Matrix(sample: Array<Array<Double>>) {
     operator fun plus(other: Matrix): Matrix {
         checkForSimple(other)
         val result = array.clone()
-        for(i in result.indices)
-            for(j in result[0].indices)
-                result[i][j]+=other[i,j]
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] += other[i, j]
         return Matrix(result)
     }
 
     operator fun minus(other: Matrix): Matrix {
         checkForSimple(other)
         val result = array.clone()
-        for(i in result.indices)
-            for(j in result[0].indices)
-                result[i][j]+=other[i,j]
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] += other[i, j]
         return Matrix(result)
     }
 
     operator fun times(other: Matrix): Matrix {
         checkForMultiply(other)
-        val result : Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
-        for(i in result.indices)
-            for(j in result[0].indices)
-                for(k in 0 until cols)
-                    result[i][j] += (array[i][k] * other[k,j])
+        val result: Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
+        for (i in result.indices)
+            for (j in result[0].indices)
+                for (k in 0 until cols)
+                    result[i][j] += (array[i][k] * other[k, j])
         return Matrix(result)
     }
 
     operator fun plus(scalar: Double): Matrix {
         val result = array.clone()
-        for(i in result.indices)
-           for(j in result[0].indices)
-               result[i][j]+=scalar
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] += scalar
         return Matrix(result)
     }
 
     operator fun minus(scalar: Double): Matrix {
         val result = array.clone()
-        for(i in result.indices)
-            for(j in result[0].indices)
-                result[i][j]-=scalar
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] -= scalar
         return Matrix(result)
     }
 
     operator fun times(scalar: Double): Matrix {
         val result = array.clone()
-        for(i in result.indices)
-            for(j in result[0].indices)
-                result[i][j]*=scalar
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] *= scalar
         return Matrix(result)
     }
 
     operator fun div(scalar: Double): Matrix {
-        if(scalar==0.0) {
+        if (scalar == 0.0) {
             throw IllegalArgumentException("Сan't be divided by zero")
         }
         val result = array.clone()
-        for(i in result.indices)
-            for(j in result[0].indices)
-                result[i][j]/=scalar
+        for (i in result.indices)
+            for (j in result[0].indices)
+                result[i][j] /= scalar
         return Matrix(result)
     }
 
-    fun transpose(): Matrix
-    {
+    operator fun unaryMinus(): Matrix {
+        return this.times(-1.0)
+    }
+
+    operator fun unaryPlus() = //let's imagine that there is at least some practical benefit in this function X2
+        Unit
+
+    fun transpose(): Matrix {
         val result: Array<Array<Double>> = Array(cols) { Array(rows) { 0.0 } }
-        for(i in array.indices)
-            for(j in array[0].indices)
+        for (i in array.indices)
+            for (j in array[0].indices)
                 result[j][i] = array[i][j]
         return Matrix(result)
     }
@@ -125,61 +135,54 @@ open class Matrix(sample: Array<Array<Double>>) {
 class MutableMatrix(sample: Array<Array<Double>>) : Matrix(sample) {
     operator fun plusAssign(other: Matrix) {
         checkForSimple(other)
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]+=other[i,j]
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] += other[i, j]
     }
 
     operator fun minusAssign(other: Matrix) {
         checkForSimple(other)
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]-=other[i,j]
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] -= other[i, j]
     }
 
     operator fun timesAssign(other: Matrix) {
         checkForMultiply(other)
-        val result : Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
-        for(i in result.indices)
-            for(j in result[0].indices)
-                for(k in 0 until cols)
-                    result[i][j] += (array[i][k] * other[k,j])
+        val result: Array<Array<Double>> = Array(rows) { Array(other.cols) { 0.0 } }
+        for (i in result.indices)
+            for (j in result[0].indices)
+                for (k in 0 until cols)
+                    result[i][j] += (array[i][k] * other[k, j])
         array = result
     }
 
     operator fun plusAssign(scalar: Double) {
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]+=scalar
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] += scalar
     }
 
     operator fun minusAssign(scalar: Double) {
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]-=scalar
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] -= scalar
     }
 
     operator fun timesAssign(scalar: Double) {
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]*=scalar
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] *= scalar
     }
 
     operator fun divAssign(scalar: Double) {
-        if(scalar==0.0) {
+        if (scalar == 0.0) {
             throw IllegalArgumentException("Сan't be divided by zero")
         }
-        for(i in array.indices)
-            for(j in array[0].indices)
-                array[i][j]/=scalar
+        for (i in array.indices)
+            for (j in array[0].indices)
+                array[i][j] /= scalar
     }
-
-    operator fun unaryMinus() {
-        this.timesAssign(-1.0)
-    }
-
-    operator fun unaryPlus() = //let's imagine that there is at least some practical benefit in this function
-        Unit
 
     operator fun set(i: Int, j: Int, value: Double) {
         array[i][j] = value

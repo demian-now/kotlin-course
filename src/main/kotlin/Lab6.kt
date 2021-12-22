@@ -17,6 +17,7 @@ class ShapeCollector<T : Shape> {
         return allShapes.sortedWith(comparator)
     }
 
+    //the name suggested by the development environment, I liked it
     fun getAllByClass(java: Class<out T>): List<T> {
         return allShapes.filterIsInstance(java)
     }

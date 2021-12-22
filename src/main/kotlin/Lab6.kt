@@ -1,13 +1,34 @@
 class ShapeCollector<T : Shape> {
     private val allShapes = mutableListOf<T>()
 
-    fun add(new: T) /* ??? */ {}
-    fun addAll(new: List<T>) {}
-    fun getAll(): List<T> {
-        TODO()
+    fun add(new: T) {
+        allShapes.add(new)
     }
 
-    fun getAllSorted(comparator: /* ??? */): List<T> {
-        TODO()
+    fun addAll(new: List<T>) {
+        allShapes.addAll(new)
+    }
+
+    fun getAll(): List<T> {
+        return allShapes
+    }
+
+    fun getAllSorted(comparator: Comparator<in T>): List<T> {
+        return allShapes.sortedWith(comparator)
+    }
+
+    fun getAllByClass(java: Class<out T>): List<T> {
+        return allShapes.filterIsInstance(java)
     }
 }
+
+object ShapeComparators {
+    val sortDSEC_area = compareBy<Shape> { -it.calcArea() }
+    val sortASC_area = compareBy<Shape> { it.calcArea() }
+    val sortDSEC_perimeter = compareBy<Shape> { -it.calcPerimeter() }
+    val sortASC_perimeter = compareBy<Shape> { it.calcPerimeter() }
+    val sortDSEC_radius = compareBy<Circle> { -it.radius }
+    val sortASC_radius = compareBy<Circle> { it.radius }
+}
+
+//If the code does work, the examples in Main.kt

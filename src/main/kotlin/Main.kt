@@ -143,5 +143,39 @@ fun main() {
 
     arr[0][0] = 100.0
     println(matrix)
+
+    val factory = ShapeFactoryImpl()
+    val shapeColl = ShapeCollector<Shape>()
+    val circleColl = ShapeCollector<Circle>()
+
+    shapeColl.add(factory.createCircle(5.0))
+    shapeColl.add(factory.createSquare(5.0))
+    shapeColl.add(factory.createRectangle(5.0, 4.0))
+    shapeColl.add(factory.createTriangle(5.0, 5.0, 5.0))
+
+    circleColl.add(factory.createCircle(2.0))
+    circleColl.add(factory.createCircle(3.0))
+    circleColl.add(factory.createCircle(4.0))
+    circleColl.add(factory.createCircle(5.0))
+
+    println("getAll shapeColl" + shapeColl.getAll())
+
+    println("shapeColl sortDSEC_area " + shapeColl.getAllSorted(ShapeComparators.sortDSEC_area))
+    println("shapeColl sortASC_area " + shapeColl.getAllSorted(ShapeComparators.sortASC_area))
+    println("shapeColl sortDSEC_perimeter " + shapeColl.getAllSorted(ShapeComparators.sortDSEC_perimeter))
+    println("shapeColl sortASC_perimeter " + shapeColl.getAllSorted(ShapeComparators.sortASC_perimeter))
+
+    println("circleColl sortDSEC_area " + circleColl.getAllSorted(ShapeComparators.sortDSEC_area))
+    println("circleColl sortASC_area " + circleColl.getAllSorted(ShapeComparators.sortASC_area))
+    println("circleColl sortDSEC_perimeter " + circleColl.getAllSorted(ShapeComparators.sortDSEC_perimeter))
+    println("circleColl sortASC_perimeter " + circleColl.getAllSorted(ShapeComparators.sortASC_perimeter))
+    println("circleColl sortDSEC_radius " + circleColl.getAllSorted(ShapeComparators.sortDSEC_radius))
+    println("circleColl sortASC_radius " + circleColl.getAllSorted(ShapeComparators.sortASC_radius))
+
+    println("shapeColl getAllByClass Circle " + shapeColl.getAllByClass(Circle::class.java))
+    println("shapeColl getAllByClass Rectangle " + shapeColl.getAllByClass(Rectangle::class.java))
+    println("shapeColl getAllByClass Square " + shapeColl.getAllByClass(Square::class.java))
+    println("shapeColl getAllByClass Triangle " + shapeColl.getAllByClass(Triangle::class.java))
+
 }
 

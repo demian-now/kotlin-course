@@ -100,7 +100,6 @@ fun main() {
         author = Author("Иван", "Сергеевич", "Тургенев"),
         year = 1852,
         genre = Genre.Drama,
-        status = Status.Available
     )
 
     val book2 = Book(
@@ -108,7 +107,6 @@ fun main() {
         author = Author("Алан", "", "Мур"),
         year = 1987,
         genre = Genre.Comics,
-        status = Status.Available
     )
 
     val book3 = Book(
@@ -116,7 +114,6 @@ fun main() {
         author = Author("Ёсиюки", "", "Садамото"),
         year = 1995,
         genre = Genre.Tragedy,
-        status = Status.Restoration
     )
 
     val book4 = Book(
@@ -124,7 +121,6 @@ fun main() {
         author = Author("Андре", "", "Асиман"),
         year = 2007,
         genre = Genre.Drama,
-        status = Status.ComingSoon
     )
 
     test5.addBook(book1)
